@@ -1,12 +1,6 @@
 pipeline {
     agent any
     stages {
-        stage('Checkout') {
-            steps {
-                echo "Checking out the git repo"
-                git url: 'https://github.com/lindynetech/calc.git'
-            }          
-        }
         stage('Compile') {
             steps {
                 sh "./gradlew compileJava"      
