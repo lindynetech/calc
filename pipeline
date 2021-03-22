@@ -1,0 +1,9 @@
+pipeline {
+  agent any
+  stages {
+    stage('Checkout') {
+      echo "Checking out the git repo"
+      git url: 'https://github.com/lindynetech/calc.git'
+    }
+  }
+}
