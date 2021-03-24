@@ -4,6 +4,8 @@ plugins {
     id 'java'
 }
 
+apply plugin: "jacoco"
+
 group = 'com.lindyne'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
@@ -21,4 +23,14 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+jacocoTestCoverageVerification {
+  violationRules {
+    rule {
+      limit {
+        minimum = 0.2
+      }
+    }
+  }
 }
