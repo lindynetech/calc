@@ -4,7 +4,8 @@ plugins {
     id 'java'
 }
 
-apply plugin: "jacoco"
+apply plugin: 'jacoco'
+apply plugin: 'checkstyle'
 
 group = 'com.lindyne'
 version = '0.0.1-SNAPSHOT'
