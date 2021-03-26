@@ -22,10 +22,15 @@ pipeline {
             }
         }
         stage('Package') {
-            sh './gradlew build'                
+            steps {
+                sh './gradlew build'
+            }
+                          
         }
         stage('Docker build') {
-            sh 'docker build -t lindynetech/calc .'
+            steps {
+                sh 'docker build -t lindynetech/calc .'
+            }
         } 
     }
 }
