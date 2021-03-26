@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label 'jenkins-docker-slave'
+    }
     stages {
         stage('Compile') {
             steps {
@@ -29,7 +31,7 @@ pipeline {
         }
         stage('Docker build') {
             steps {
-                sh 'docker build -t lindynetech/calc .'
+                sh 'docker build -t lindynetech/calculator .'
             }
         } 
     }
