@@ -58,7 +58,7 @@ pipeline {
         }
         stage("Deploy to staging") {
             steps {
-                sh "docker run -d --rm -p 8765:8080 --name calculator imageName"
+                sh "docker run -d --rm -p 8765:8080 --name calculator $imageName"
             }
         }
         stage("Acceptance test") {
