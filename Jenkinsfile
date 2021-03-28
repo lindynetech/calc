@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'leszko/jenkins-docker-slave:latest'
+            image 'jenkins_docker_slave:latest'
         }
     }
     stages {
