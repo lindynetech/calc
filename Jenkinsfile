@@ -2,6 +2,11 @@ pipeline {
     agent {
         label 'spot'
     }
+    environment {
+        imageName = "lindynetech/calculator"
+        registryCredential = 'dockerhub'
+        dockerImage = ''
+    }
     stages {
         stage('Compile') {
             steps {
@@ -29,9 +34,31 @@ pipeline {
             }
                           
         }
+        // stage('Docker build') {
+        //     steps {
+        //         sh 'docker build -t lindynetech/calculator .'
+        //     }
+        // }
         stage('Docker build') {
             steps {
-                sh 'docker build -t lindynetech/calculator .'
+                script {
+                   dockerImage = docker.build imageName
+                }
+            }
+        }
+        stage('Docker push') {
+            steps {
+                script {
+                    docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                    }                
+                }            
+                // sh 'docker push $imageName'
+            }
+        }
+        stage('Docker cleanup') {
+            steps {
+                sh "docker rmi $imageName"
             }
         } 
     }
