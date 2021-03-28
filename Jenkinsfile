@@ -1,6 +1,8 @@
 pipeline {
     agent {
-        label 'jenkins-docker-slave'
+        docker {
+            image 'leszko/jenkins-docker-slave:latest'
+        }
     }
     stages {
         stage('Compile') {
