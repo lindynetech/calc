@@ -34,11 +34,6 @@ pipeline {
             }
                           
         }
-        // stage('Docker build') {
-        //     steps {
-        //         sh 'docker build -t lindynetech/calculator .'
-        //     }
-        // }
         stage('Docker build') {
             steps {
                 script {
@@ -53,7 +48,6 @@ pipeline {
                         dockerImage.push()
                     }                
                 }            
-                // sh 'docker push $imageName'
             }
         }
         stage("Deploy to staging") {
@@ -61,16 +55,22 @@ pipeline {
                 sh "docker run -d --rm -p 8765:8080 --name calculator $imageName"
             }
         }
-        stage("Acceptance test") {
+        stage("Acceptance test Basic Curl") {
             steps {
                 sleep 60
                 sh "chmod +x acceptance_test.sh && ./acceptance_test.sh"
             }
         }
+        stage("Acceptance test Cucumber") {
+            steps {
+                sleep 60
+                sh "./gradlew acceptanceTest -Dcalculator.url=http://localhost:8765"
+            }
+        }
         stage('Docker cleanup') {
             steps {
                 sh "docker stop calculator"
-                sh "docker rmi $imageName"
+                // sh "docker rmi $imageName"
             }
         } 
     }
