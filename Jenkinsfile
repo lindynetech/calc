@@ -67,11 +67,12 @@ pipeline {
                 sh "./gradlew acceptanceTest -Dcalculator.url=http://localhost:8765"
             }
         }
-        stage('Docker cleanup') {
-            steps {
+     
+        post {
+            always {
                 sh "docker stop calculator"
                 // sh "docker rmi $imageName"
             }
-        } 
+        }
     }
 }
