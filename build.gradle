@@ -27,12 +27,12 @@ dependencies {
 }
 
 task acceptanceTest(type: Test) {
-    include '**/acceptance/**'
-    systemProperties System.getProperties()
+  include '**/acceptance/**'
+  systemProperties System.getProperties()
 }
 
 task smokeTest(type: Test) {
-	include '**/acceptance/**'
+	include '**/smoke/**'
 	systemProperties System.getProperties()
 }
 
