@@ -5,7 +5,6 @@ pipeline {
     environment {
         imageName = "lindynetech/calculator"
         registryCredential = 'dockerhub'
-        dockerImage = ''
     }
     stages {
         stage('Compile') {
@@ -43,7 +42,7 @@ pipeline {
         }
         stage('Docker Login') {
             steps {
-                 withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'docker-hub-credentials',
+                 withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub',
                     usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
                     sh "docker login --username $USERNAME --password $PASSWORD"
                 }
