@@ -4,6 +4,7 @@ plugins {
 	id 'java'
 }
 
+apply plugin: 'io.spring.dependency-management'
 apply plugin: 'jacoco'
 apply plugin: 'checkstyle'
 
@@ -30,8 +31,14 @@ task acceptanceTest(type: Test) {
     systemProperties System.getProperties()
 }
 
+task smokeTest(type: Test) {
+	include '**/acceptance/**'
+	systemProperties System.getProperties()
+}
+
 test {
-  exclude '**/acceptance/**'
+  exclude '**/acceptance/**'  
+	exclude '**/smoke/**'
 	useJUnitPlatform()
 }
 

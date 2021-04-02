@@ -73,9 +73,14 @@ pipeline {
         }
         stage("Release") {
           steps {
-                sh "kubectl config use-context production"
+                sh "kubectl config use-context prod"
                 sh "kubectl apply -f hazelcast.yml"
                 sh "kubectl apply -f calculator.yml"
+            }
+        }
+        stage('Smoke Test') {
+            steps{
+                sh "chmod +x smoke_test.sh && ./smoke_test.sh"
             }
         }
     }
