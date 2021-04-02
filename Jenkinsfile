@@ -62,14 +62,21 @@ pipeline {
         stage("Deploy to staging") {
             steps {
                 sh "kubectl config use-context staging"
-                sh "kubectl apply -f hazelcast.yaml"
-                sh "kubectl apply -f calculator.yaml"
+                sh "kubectl apply -f hazelcast.yml"
+                sh "kubectl apply -f calculator.yml"
             }
         }
         stage("Acceptance test") {
             steps {
                 sleep 60
                 sh "chmod +x acceptance_test_k8s.sh && ./acceptance_test_k8s.sh"
+            }
+        }
+        stage("Release") {
+          steps {
+                sh "kubectl config use-context production"
+                sh "kubectl apply -f hazelcast.yml"
+                sh "kubectl apply -f calculator.yml"
             }
         }
     }
