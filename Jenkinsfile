@@ -64,11 +64,5 @@ pipeline {
                 sh "kubectl apply -f calculator.yaml"
             }
         }
-    
-        post {
-            always {                
-                // sh "docker rmi $imageName:${BUILD_TIMESTAMP}"
-            }
-        }
     }
 }
