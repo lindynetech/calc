@@ -6,7 +6,7 @@ metadata:
   labels:
     app: calculator
 spec:
-  replicas: 5
+  replicas: 3
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -23,6 +23,7 @@ spec:
       containers:
       - name: calculator
         image: lindynetech/calculator:{{VERSION}}
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
         readinessProbe:
