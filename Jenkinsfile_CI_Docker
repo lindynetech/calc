@@ -36,38 +36,42 @@ pipeline {
         }
         stage('Docker build') {
             steps {
-                sh 'docker build -t $imageName:${BUILD_TIMESTAMP} .'
-            }
-        }
-        stage('Docker Login') {
-            steps {
-                 withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'docker-hub-credentials',
-                    usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-                    sh "docker login --username $USERNAME --password $PASSWORD"
+                script {
+                   dockerImage = docker.build imageName
                 }
             }
         }
         stage('Docker push') {
             steps {
-                sh 'docker push $imageName:${BUILD_TIMESTAMP}'            
-            }
-        }
-        stage('Update Version') {
-            steps {
-                sh "sed -i 's/{{VERSION}}/${BUILD_TIMESTAMP}/g' calculator.yml"
+                script {
+                    docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                    }                
+                }            
             }
         }
         stage("Deploy to staging") {
             steps {
-                sh "kubectl config use-context staging"
-                sh "kubectl apply -f hazelcast.yaml"
-                sh "kubectl apply -f calculator.yaml"
+                sh "docker run -d --rm -p 8765:8080 --name calculator $imageName"
             }
         }
-    
+        stage("Acceptance test Basic Curl") {
+            steps {
+                sleep 60
+                sh "chmod +x acceptance_test.sh && ./acceptance_test.sh"
+            }
+        }
+        stage("Acceptance test Cucumber") {
+            steps {
+                sleep 60
+                sh "./gradlew acceptanceTest -Dcalculator.url=http://localhost:8765"
+            }
+        }
+     
         post {
-            always {                
-                // sh "docker rmi $imageName:${BUILD_TIMESTAMP}"
+            always {
+                sh "docker stop calculator"
+                // sh "docker rmi $imageName"
             }
         }
     }
