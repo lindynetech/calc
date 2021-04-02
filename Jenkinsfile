@@ -15,7 +15,7 @@ pipeline {
         stage('Unit test') {
             steps {
               //sh "./gradlew test" 
-               gradleTest
+               gradleTest()
             }
         }
         // Fails for some reason
@@ -34,7 +34,7 @@ pipeline {
             steps {
             //   sh './gradlew build'
             // Import Library first https://github.com/lindynetech/jenkins-lib-gradle.git
-                gradleBuild   
+                gradleBuild()   
             }                          
         }
         stage('Docker build') {
